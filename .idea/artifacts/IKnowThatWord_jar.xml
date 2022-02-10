@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="IKnowThatWord:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/IKnowThatWord_jar</output-path>
+    <root id="archive" name="IKnowThatWord.jar">
+      <element id="module-output" name="IKnowThatWord" />
+    </root>
+  </artifact>
+</component>
