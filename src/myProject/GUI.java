@@ -58,4 +58,8 @@ public class GUI extends JFrame {
     private class Escucha {
 
     }
+
+    private static void Reader () {
+
+    }
 }
