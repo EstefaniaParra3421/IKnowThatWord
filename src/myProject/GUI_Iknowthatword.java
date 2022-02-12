@@ -13,11 +13,13 @@ public class GUI_Iknowthatword extends JFrame {
 
     //Contenedor
     private JPanel panelBotones, panelDatos, panelLogo;
-    private Titulos titulo;
+    private Header titulo;
     private ImageIcon logo;
     private JLabel labelLogo;
     private Escucha escucha;
     private JTextArea textoPrueba;
+    private PanelPalabra panelPalabra;
+    private ControlPalabra controlPalabra;
 
     //Clase contructor
     public GUI_Iknowthatword(){
@@ -25,7 +27,8 @@ public class GUI_Iknowthatword extends JFrame {
 
         //Configuracion por defecto de la ventana
         this.setTitle("I KNOW THAT WORD");
-        this.setSize(600, 500);
+        //this.setSize(600, 500);
+        this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -49,7 +52,7 @@ public class GUI_Iknowthatword extends JFrame {
         escucha = new Escucha();
 
         //Set up JComponents
-        titulo = new Titulos("I KNOW THAT WORD", Color.BLACK);
+        titulo = new Header("I KNOW THAT WORD", Color.BLACK);
         //this.add(titulo,BorderLayout.NORTH);
 
         //---Boton Continue---
@@ -92,6 +95,9 @@ public class GUI_Iknowthatword extends JFrame {
         this.add(panelLogo,BorderLayout.NORTH);
 
         textoPrueba = new JTextArea(15,20);
+
+        controlPalabra = new ControlPalabra();
+        panelPalabra = new PanelPalabra(controlPalabra.getPalabra());
     }
 
     private class Escucha implements ActionListener {
@@ -101,20 +107,20 @@ public class GUI_Iknowthatword extends JFrame {
             panelDatos.removeAll();
             if(objectEvent.getSource()==botonContinue){
 
+                panelLogo.removeAll();
+                remove(panelPalabra);
                 textoPrueba.setText("AQUI VA EL PLAY (CONTINUE)");
                 textoPrueba.setBackground(null);
                 textoPrueba.setFont(new Font("arial", Font.BOLD,27));
                 panelDatos.add(textoPrueba);
             }else {
                 if(objectEvent.getSource()==botonPlay){
-
-                    textoPrueba.setText("AQUI VA EL PLAY (NORMAL)");
-                    textoPrueba.setBackground(null);
-                    textoPrueba.setFont(new Font("arial", Font.BOLD,27));
-                    panelDatos.add(textoPrueba);
+                    panelLogo.removeAll();
+                    add(panelPalabra, BorderLayout.CENTER);
                 }
                 else{
-
+                    remove(panelPalabra);
+                    panelLogo.add(labelLogo);
                     textoPrueba.setText("AQUI VA EL HOW TO PLAY");
                     textoPrueba.setBackground(null);
                     textoPrueba.setFont(new Font("arial", Font.BOLD,27));
