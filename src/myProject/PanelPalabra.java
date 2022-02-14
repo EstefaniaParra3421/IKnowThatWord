@@ -29,6 +29,7 @@ public class PanelPalabra extends JPanel {
     public PanelPalabra(String frase) {
         this.frase = frase;
         setPreferredSize(new Dimension(WIDTH, HEIGTH));
+        palabra="";
     }
 
     public void setPalabra(String palabra) {
@@ -45,10 +46,10 @@ public class PanelPalabra extends JPanel {
         super.paintComponent(g);
 
         g.setColor(Color.LIGHT_GRAY);
-        g.fillRect(0, 0, WIDTH, HEIGTH);
+        g.fillRect(125, 0, WIDTH, HEIGTH);
         g.setFont(new Font(Font.DIALOG, Font.BOLD, 17));
         g.setColor(Color.BLACK);
-        g.drawString(palabra, 4, 30);
+        g.drawString(palabra, 150, 30);
     }
 
 

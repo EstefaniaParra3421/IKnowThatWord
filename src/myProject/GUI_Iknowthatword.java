@@ -23,6 +23,7 @@ public class GUI_Iknowthatword extends JFrame {
     private PanelPalabra panelPalabra;
     private ControlPalabra controlPalabra;
     private Timer timer, timerTwo;
+    private FileManager fileManager;
 
     //Clase contructor
     public GUI_Iknowthatword() {
@@ -52,6 +53,7 @@ public class GUI_Iknowthatword extends JFrame {
         //Set up Container and layout
 
         //Cretate Listener and Control objects
+        fileManager=new FileManager();
         escucha = new Escucha();
 
         //Set up JComponents
@@ -102,10 +104,11 @@ public class GUI_Iknowthatword extends JFrame {
         controlPalabra = new ControlPalabra();
 
         panelPalabra = new PanelPalabra(controlPalabra.getPalabra());
+        this.add(panelPalabra, BorderLayout.CENTER);
 
         timer = new Timer(1000, escucha);
         timer.start();
-        timerTwo = new Timer(7000, escucha);
+        timerTwo = new Timer(3000, escucha);
         timerTwo.start();
     }
 
@@ -117,83 +120,158 @@ public class GUI_Iknowthatword extends JFrame {
         private ArrayList<String> palabrasMemorizadas = new ArrayList<String>();
         private ArrayList<String> totalPalabras = new ArrayList<String>();
         private Random aleatorio = new Random();
+        private int flagBienvenida=1;
+        private ArrayList<String> usuarios=new ArrayList<String>();
+
 
         @Override
         public void actionPerformed(ActionEvent objectEvent) {
             panelDatos.removeAll();
 
             if (objectEvent.getSource() == botonContinue) {
-                panelLogo.removeAll();
+                //panelLogo.removeAll();
                 remove(panelPalabra);
                 textoPrueba.setText("AQUI VA EL PLAY (CONTINUE)");
                 textoPrueba.setBackground(null);
                 textoPrueba.setFont(new Font("arial", Font.BOLD, 27));
                 panelDatos.add(textoPrueba);
             }
-            else {
-                if (objectEvent.getSource() == botonPlay) {
-                    panelLogo.removeAll();
-                    flagPressed = true;
-                    controlPalabra.nivel();
-                    System.out.println("entra al play");
-                }
-                if (objectEvent.getSource() == timer && flagPressed == true) {
 
-                    panelPalabra.updateUI();
-                    panelLogo.removeAll();
-                    botonPlay.setEnabled(false);
-
-                    if (counter <= controlPalabra.getPalabrasMemorizar()) {
-                        if (counter == 0) {
-                            totalPalabras = controlPalabra.listadoPalabras();
-                        }
-                        palabra = totalPalabras.get(aleatorio.nextInt(totalPalabras.size()));
-                        palabrasMemorizadas.add(palabra);
-                        panelPalabra.setPalabra(palabra);
-                        add(panelPalabra, BorderLayout.CENTER);
-                        panelPalabra.updateUI();
-                        counter++;
-                        if (counter == controlPalabra.getPalabrasMemorizar() + 1) {
-                            timer.stop();
-                            System.out.println(palabrasMemorizadas);
-                            remove(panelPalabra);
-                            JOptionPane.showMessageDialog(null, "Seguro que ya memorizaste tus palabras. Desmuestralo!");
-                            flagWords = true;
-                            counter = 0;
-                            panelPalabra.updateUI();
-                            //JOptionPane.showConfirmDialog(panelPalabra,"jeje","",JOptionPane.YES_NO_OPTION);
+            if (objectEvent.getSource() == botonPlay)
+            {
+                if(flagBienvenida==1)
+                {
+                    int usuarioNuevo=0;
+                    usuarios= fileManager.lecturaFileUsuarios();
+                    String nombre=JOptionPane.showInputDialog("Bienvenido, introduzca su nombre");
+                    for(int i=0; i < usuarios.size(); i++)//For para leer los usuarios
+                    {
+                        if(usuarios.get(i).equals(nombre))
+                        {
+                            JOptionPane.showMessageDialog(null, "Bienvenido de nuevo "+nombre);
+                            usuarioNuevo=1;
+                            //nivelEncontrado= usuarios.get(i).
+                            break;
                         }
                     }
 
+                    if(nombre!=null && usuarioNuevo==0)
+                    {
+                        usuarios.add(nombre);
+                        fileManager.escribirTexto(nombre);
+                    }
 
-                }
-                if (objectEvent.getSource() == timerTwo && flagWords == true) {
-                    if (counter <= totalPalabras.size()) {
-                        String fraseSeleccionada = totalPalabras.get(counter);
-                        panelPalabra.setPalabra(fraseSeleccionada);
-                        int option = JOptionPane.showConfirmDialog(panelPalabra, "", "", JOptionPane.YES_NO_OPTION);
-                        for (int i = 0; i <= palabrasMemorizadas.size(); i++) {
-                            if (fraseSeleccionada.equals(palabrasMemorizadas.get(i)) && option == JOptionPane.YES_OPTION) {
-                                JOptionPane.showMessageDialog(null, "Has Acerado!");
+                    while(nombre==null)
+                    {
+                        nombre=JOptionPane.showInputDialog("Tiene que introducir un nombre para jugar.");
+                        for(int i=0; i < usuarios.size(); i++)//For para leer los usuarios
+                        {
+                            if(usuarios.get(i).equals(nombre))
+                            {
+                                JOptionPane.showMessageDialog(null, "Bienvenido de nuevo "+nombre);
+                                usuarioNuevo=1;
                                 break;
-                            } else if (!fraseSeleccionada.equals(palabrasMemorizadas.get(i)) && option == JOptionPane.NO_OPTION) {
-                                JOptionPane.showMessageDialog(null, "Has Acerado!");
-                                break;
-                            } else {
-                                JOptionPane.showMessageDialog(null, "Fallaste!");
                             }
                         }
-                        counter++;
+
+                        if(nombre!=null && usuarioNuevo==0)
+                        {
+                            usuarios.add(nombre);
+                            fileManager.escribirTexto(nombre);
+                        }
                     }
-                } else {
+                    flagBienvenida=0;
+                }
+
+                //panelLogo.removeAll();
+                //panelLogo.setVisible(false);
+                //panelPalabra.setVisible(true);
+                botonPlay.setEnabled(false);
+                flagPressed = true;
+                controlPalabra.nivel();
+                System.out.println("entra al play");
+            }
+
+            if (objectEvent.getSource() == timer && flagPressed == true) {
+                //panelPalabra.updateUI()
+                //panelLogo.removeAll();
+                //panelLogo.setVisible(false);
+                //add(panelPalabra, BorderLayout.CENTER);
+                //panelPalabra.setVisible(true);
+                //botonPlay.setEnabled(false);
+
+                if (counter < controlPalabra.getPalabrasMemorizar())
+                {
+                    if (counter == 0) {
+                        totalPalabras = controlPalabra.listadoPalabras();
+                    }
+                    palabra = totalPalabras.get(aleatorio.nextInt(totalPalabras.size()));
+                    palabrasMemorizadas.add(palabra);
+                    panelPalabra.setPalabra(palabra);
+                    panelPalabra.updateUI();
+                    //add(panelPalabra, BorderLayout.CENTER);
+                    counter++;
+                    /*if (counter == controlPalabra.getPalabrasMemorizar() + 1) {
+                        timer.stop();
+                        System.out.println(palabrasMemorizadas);
+                        remove(panelPalabra);
+                        JOptionPane.showMessageDialog(null, "Seguro que ya memorizaste tus palabras. Desmuestralo!");
+                        flagWords = true;
+                        counter = 1;*/
+                        //panelPalabra.updateUI();
+                        //JOptionPane.showConfirmDialog(panelPalabra,"jeje","",JOptionPane.YES_NO_OPTION);
+
+                }
+                else
+                {
+                    timer.stop();
+                    System.out.println(palabrasMemorizadas);
+                    JOptionPane.showMessageDialog(null, "Seguro que ya memorizaste tus palabras. Desmuestralo!");
+                    flagWords = true;
+                    counter = 1;
+                }
+            }
+
+            if (objectEvent.getSource() == timerTwo && flagWords == true)
+            {
+
+                if (counter < totalPalabras.size()) {
+                    String fraseSeleccionada = totalPalabras.get(counter);
+                    panelPalabra.setPalabra(fraseSeleccionada);
+                    panelPalabra.updateUI();
+                    System.out.println(palabrasMemorizadas);
+                    Boolean flag=false;
+                    int option = JOptionPane.showConfirmDialog(panelPalabra, "", "", JOptionPane.YES_NO_OPTION);
+
+                    for(int i = 0; i < palabrasMemorizadas.size(); i++){
+                        if(fraseSeleccionada.equals(palabrasMemorizadas.get(i))){
+                            flag=true;
+                            break;
+                        }else{
+                            flag=false;
+                        }
+                    }
+                    if(flag==true && option ==JOptionPane.YES_OPTION){
+                        JOptionPane.showMessageDialog(null,"Acertaste!");
+                    }else if(flag == false && option ==JOptionPane.YES_OPTION){
+                        JOptionPane.showMessageDialog(null, "Fallaste!");
+                    }else if(flag==true && option==JOptionPane.NO_OPTION){
+                        JOptionPane.showMessageDialog(null, "Fallaste!");
+                    }else if(flag == false && option==JOptionPane.NO_OPTION){
+                        JOptionPane.showMessageDialog(null,"Acertaste!");
+                    }
+                    counter++;
+                }
+            } /*else {
+                    timerTwo.stop();
                     remove(panelPalabra);
                     panelLogo.add(labelLogo);
                     textoPrueba.setText("AQUI VA EL HOW TO PLAY");
                     textoPrueba.setBackground(null);
                     textoPrueba.setFont(new Font("arial", Font.BOLD, 27));
-                    panelDatos.add(textoPrueba);
-                }
-            }
+                    panelDatos
+                    .add(textoPrueba);
+                }*/
 
             revalidate();
             repaint();
