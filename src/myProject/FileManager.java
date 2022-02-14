@@ -21,15 +21,15 @@ public class FileManager {
             fileReader = new FileReader("src/myProject/files/words.txt");
             input = new BufferedReader(fileReader);
             String line = input.readLine();
-            while(line!=null){
+            while (line != null) {
                 palabras.add(line);//Agrega cada elemento del texto al arraylist
-                line=input.readLine();
+                line = input.readLine();
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }finally{
+        } finally {
             try {
                 input.close();
             } catch (IOException e) {
@@ -39,15 +39,15 @@ public class FileManager {
         return palabras;
     }
 
-    public void escribirTexto(String linea){
+    public void escribirTexto(String linea) {
         try {
-            fileWriter = new FileWriter("src/myProject/files/words.txt",true);
+            fileWriter = new FileWriter("src/myProject/files/words.txt", true);
             output = new BufferedWriter(fileWriter);
             output.write(linea);
             output.newLine();
         } catch (IOException e) {
             e.printStackTrace();
-        }finally{
+        } finally {
             try {
                 output.close();
             } catch (IOException e) {

@@ -5,8 +5,9 @@ import java.awt.*;
 
 /**
  * This class is used for ...
- * @autor Paola-J Rodriguez-C paola.rodriguez@correounivalle.edu.co
+ *
  * @version v.1.0.0 date:21/11/2021
+ * @autor Paola-J Rodriguez-C paola.rodriguez@correounivalle.edu.co
  */
 public class GUI extends JFrame {
 
@@ -21,12 +22,12 @@ public class GUI extends JFrame {
     /**
      * Constructor of GUI class
      */
-    public GUI(){
+    public GUI() {
         initGUI();
 
         //Default JFrame configuration
         this.setTitle("I KNOW  THAT WORD");
-        this.setSize(200,100);
+        this.setSize(200, 100);
         //this.pack();
         this.setResizable(true);
         this.setVisible(true);
@@ -54,15 +55,16 @@ public class GUI extends JFrame {
 
         headerProject = new Header("Header ...", Color.BLACK);
 
-        this.add(headerProject,BorderLayout.NORTH); //Change this line if you change JFrame Container's Layout
+        this.add(headerProject, BorderLayout.NORTH); //Change this line if you change JFrame Container's Layout
     }
 
     /**
      * Main process of the Java program
+     *
      * @param args Object used in order to send input data from command line when
      *             the program is execute by console.
      */
-    public static void main(String[] args){
+    public static void main(String[] args) {
         //Lanzar una interfraz grafica de escucha
         EventQueue.invokeLater(new Runnable() {
             @Override

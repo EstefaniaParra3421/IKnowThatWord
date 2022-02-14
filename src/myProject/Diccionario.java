@@ -6,6 +6,7 @@ import java.util.Random;
 /**
  * Class diccionario will store a list inside the variable "diccionario" and will use a method "getPalabras"
  * to return the word contained inside a text file randomly
+ *
  * @author Brandon Perdomo brandon.perdomo@correunivalle.edu.co
  * @version v.1.0.0 12/02/2022
  */
@@ -17,16 +18,17 @@ public class Diccionario {
     /**
      * This class stores the list in "diccionario"
      */
-    public Diccionario(){
+    public Diccionario() {
         FileManager fileManager = new FileManager();
         diccionario = fileManager.lecturaFile();
     }
 
     /**
      * This class gets one of the words contained within the array randomly.
+     *
      * @return a word from the array
      */
-    public String getPalabras(){
+    public String getPalabras() {
         Random aleatorio = new Random();
 
         return diccionario.get(aleatorio.nextInt(diccionario.size()));
