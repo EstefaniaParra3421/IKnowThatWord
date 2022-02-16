@@ -1,25 +1,28 @@
 package myProject;
 
+import org.w3c.dom.css.RGBColor;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.RGBImageFilter;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class GUI_Iknowthatword extends JFrame {
 
     //Declaracion de botones
-    private JButton botonContinue, botonPlay, botonHTPlay;
+    private JButton botonPlay, botonHTPlay;
 
     //Contenedor
-    private JPanel panelBotones, panelDatos, panelLogo;
+    private JPanel panelBotones, panelDatos, panelLogo, panelHTPlay;
     private Header titulo;
     private ImageIcon logo;
     private JLabel labelLogo;
     private Escucha escucha;
-    private JTextArea textoPrueba;
+    private JTextArea textoHTPlay;
     private PanelPalabra panelPalabra;
     private ControlPalabra controlPalabra;
     private Timer timer, timerTwo;
@@ -35,7 +38,32 @@ public class GUI_Iknowthatword extends JFrame {
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
+        //Color de la ventana
+        this.getContentPane().setBackground(new Color(255,202,202));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    /**
+     * The class stores everything related to the window to show the "How to play", it shows the text and the play button
+     */
+
+    private void ventanaHTPlay(){
+        panelBotones.remove(botonHTPlay);
+        panelPalabra.setVisible(false);
+        //Creacion del panelHTPlay
+        panelHTPlay = new JPanel();
+        panelHTPlay.setBorder(BorderFactory.createTitledBorder(null, "HOW TO PLAY",TitledBorder.CENTER,
+                TitledBorder.CENTER, new Font("Berlin Sans FB", Font.PLAIN,40), new Color(46,150,215)));
+        textoHTPlay.setText("A sequence of words appears (in Spanish), one after another. Memorize them all.\n\n" +
+                "After the round of words to memorize, the game will present you with a list with double of words.\n\n" +
+                "If the word belongs to the list you have memorized, click on the “SI” button, otherwise, click on the “NO” button.\n\n" +
+                "If you acert to hit the vast majority of words, you will go to the next level.\n\n" +
+                "Are you ready?");
+        textoHTPlay.setBackground(null);
+        textoHTPlay.setFont(new Font("Berlin Sans FB", Font.PLAIN,30));
+        this.add(panelHTPlay);
+        panelHTPlay.add(textoHTPlay);
+        panelHTPlay.setBackground(new Color(255,202,202));
     }
 
     //Ejecucion del programa (main)
@@ -60,11 +88,6 @@ public class GUI_Iknowthatword extends JFrame {
         titulo = new Header("I KNOW THAT WORD", Color.BLACK);
         //this.add(titulo,BorderLayout.NORTH);
 
-        //---Boton Continue---
-        botonContinue = new JButton("CONTINUE");
-        //Escucha del boton
-        botonContinue.addActionListener(escucha);
-
         //---Boton Play---
         botonPlay = new JButton("PLAY");
         //Escucha del boton
@@ -77,18 +100,19 @@ public class GUI_Iknowthatword extends JFrame {
 
         //Creacion del panelBotones
         panelBotones = new JPanel();
-        panelBotones.add(botonContinue);
         panelBotones.add(botonPlay);
         panelBotones.add(botonHTPlay);
+        panelBotones.setBackground(new Color(255,202,202));
 
         this.add(panelBotones, BorderLayout.SOUTH);
 
         //Creacion del panelDatos
         panelDatos = new JPanel();
-        //panelDatos.setBorder(BorderFactory.createTitledBorder(null, "",
-        //TitledBorder.CENTER, TitledBorder.CENTER, new Font("calibri", Font.BOLD,20), Color.BLUE));
+        panelDatos.setBorder(BorderFactory.createTitledBorder(null, "",
+        TitledBorder.CENTER, TitledBorder.CENTER, new Font("calibri", Font.BOLD,20), Color.BLUE));
 
         this.add(panelDatos, BorderLayout.CENTER);
+        textoHTPlay = new JTextArea(15, 20);
 
         //Creacion de panelLogo
         labelLogo = new JLabel();
@@ -96,15 +120,18 @@ public class GUI_Iknowthatword extends JFrame {
         labelLogo.setIcon(logo);
         panelLogo = new JPanel();
         panelLogo.add(labelLogo);
+        panelLogo.setBackground(new Color(255,202,202));
 
         this.add(panelLogo, BorderLayout.NORTH);
 
-        textoPrueba = new JTextArea(15, 20);
-
+        //Creacion del controlPalabra
         controlPalabra = new ControlPalabra();
 
+        //Creacion del panelPalabra
         panelPalabra = new PanelPalabra(controlPalabra.getPalabra());
         this.add(panelPalabra, BorderLayout.CENTER);
+        panelPalabra.setBackground(new Color(255,202,202));
+        //panelPalabra.setVisible(false);
 
         timer = new Timer(1000, escucha);
         timer.start();
@@ -126,19 +153,17 @@ public class GUI_Iknowthatword extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent objectEvent) {
-            panelDatos.removeAll();
+            //panelHTPlay.removeAll();
 
-            if (objectEvent.getSource() == botonContinue) {
-                //panelLogo.removeAll();
-                remove(panelPalabra);
-                textoPrueba.setText("AQUI VA EL PLAY (CONTINUE)");
-                textoPrueba.setBackground(null);
-                textoPrueba.setFont(new Font("arial", Font.BOLD, 27));
-                panelDatos.add(textoPrueba);
+            if (objectEvent.getSource() == botonHTPlay)
+            {
+                ventanaHTPlay();
             }
 
             if (objectEvent.getSource() == botonPlay)
             {
+                //panelHTPlay.setVisible(false);
+                //panelLogo.setVisible(false);
                 if(flagBienvenida==1)
                 {
                     int usuarioNuevo=0;
