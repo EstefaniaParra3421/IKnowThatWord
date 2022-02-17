@@ -25,11 +25,9 @@ public class FileManager {
             String line = input.readLine();
             while (line != null)
             {
-                int coma=line.indexOf(",");
-                String nombre=line.substring(0, coma);
-                //String nivel=line.substring(coma+1, (coma+2<0) ?coma+2:coma+1);
-                usuarios.add(nombre);
-                //usuarios.add(nivel);
+                //int coma=line.indexOf(",");
+                //String nombre=line.substring(0, coma);
+                usuarios.add(line);
                 line=input.readLine();
             }
         } catch (FileNotFoundException e) {

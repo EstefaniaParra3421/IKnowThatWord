@@ -46,10 +46,10 @@ public class PanelPalabra extends JPanel {
         super.paintComponent(g);
 
         g.setColor(Color.LIGHT_GRAY);
-        g.fillRect(125, 0, WIDTH, HEIGTH);
+        g.fillRect(100, 0, WIDTH, HEIGTH);
         g.setFont(new Font(Font.DIALOG, Font.BOLD, 17));
         g.setColor(Color.BLACK);
-        g.drawString(palabra, 150, 30);
+        g.drawString(palabra, 120, 30);
     }
 
 

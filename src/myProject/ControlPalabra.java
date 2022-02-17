@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class ControlPalabra {
     private Diccionario palabras;
     private String palabra, fraseSeleccionada;
-    private int niveles = 1, palabrasMemorizar;
+    private int palabrasMemorizar;
     private ArrayList<String> totalPalabras;
     private ControlPalabra controlPalabra;
 
@@ -40,7 +40,7 @@ public class ControlPalabra {
      *
      * @return int palabrasMemorizar
      */
-    public int nivel() {
+    public int nivel(int niveles) {
         switch (niveles) {
             case 1:
                 palabrasMemorizar = 10;
@@ -76,8 +76,8 @@ public class ControlPalabra {
         return palabrasMemorizar;
     }
 
-    public ArrayList<String> listadoPalabras() {
-        nivel();
+    public ArrayList<String> listadoPalabras(int nivelUsuario) {
+        nivel(nivelUsuario);
         controlPalabra = new ControlPalabra();
         totalPalabras = new ArrayList<String>();
         System.out.println("entra al listado de palabras " + palabrasMemorizar);
