@@ -25,6 +25,7 @@ public class GUI_Iknowthatword extends JFrame {
     private Timer timer, timerTwo;
     private FileManager fileManager;
 
+
     /**
      * Constructor of GUI_Iknowthatword class
      */
@@ -40,6 +41,7 @@ public class GUI_Iknowthatword extends JFrame {
         this.getContentPane().setBackground(new Color(255,202,202));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setIconImage(new ImageIcon(getClass().getResource("/recursos/icono.png")).getImage());
+        panelHTPlay = new JPanel();
     }
 
     /**
@@ -50,7 +52,7 @@ public class GUI_Iknowthatword extends JFrame {
         panelBotones.remove(botonHTPlay);
         panelPalabra.setVisible(false);
         //Creacion del panelHTPlay
-        panelHTPlay = new JPanel();
+
         panelHTPlay.setBorder(BorderFactory.createTitledBorder(null, "HOW TO PLAY",TitledBorder.CENTER,
                 TitledBorder.CENTER, new Font("Berlin Sans FB", Font.PLAIN,40), new Color(46,150,215)));
         //Configuracion para el textoHTPlay
@@ -250,7 +252,7 @@ public class GUI_Iknowthatword extends JFrame {
                     panelPalabra.setPalabra(fraseSeleccionada);
                     panelPalabra.updateUI();
                     Boolean flag=false;
-                    int option = JOptionPane.showConfirmDialog(panelPalabra, "", "", JOptionPane.YES_NO_OPTION);
+                    int option = JOptionPane.showConfirmDialog(panelPalabra, "¿esta palabra se encontaba?", "", JOptionPane.YES_NO_OPTION);
 
                     for(int i = 0; i < palabrasMemorizadas.size(); i++){
                         if(fraseSeleccionada.equals(palabrasMemorizadas.get(i))){
@@ -287,6 +289,7 @@ public class GUI_Iknowthatword extends JFrame {
                         flagWords = false;
                         aciertaNivel = false;
                         botonPlay.setEnabled(true);
+                        palabrasMemorizadas.clear();
                         timer.start();
                         timerTwo.start();
                     }
@@ -301,6 +304,7 @@ public class GUI_Iknowthatword extends JFrame {
                         flagWords = false;
                         aciertaNivel = false;
                         botonPlay.setEnabled(true);
+                        palabrasMemorizadas.clear();
                         timer.start();
                         timerTwo.start();
                         JOptionPane.showMessageDialog(null, "Si quieres seguir jugando presiona de nuevo el botón play," +
