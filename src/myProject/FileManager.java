@@ -25,11 +25,9 @@ public class FileManager {
             String line = input.readLine();
             while (line != null)
             {
-                int coma=line.indexOf(",");
-                String nombre=line.substring(0, coma);
-                //String nivel=line.substring(coma+1, (coma+2<0) ?coma+2:coma+1);
-                usuarios.add(nombre);
-                //usuarios.add(nivel);
+                //int coma=line.indexOf(",");
+                //String nombre=line.substring(0, coma);
+                usuarios.add(line);
                 line=input.readLine();
             }
         } catch (FileNotFoundException e) {
@@ -87,6 +85,41 @@ public class FileManager {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+    public void escribirTexto(ArrayList<String> usuarios, String nombreJugadorActual, int nivel) {
+        try {
+            fileWriter = new FileWriter(PATH_USUARIOS, true);
+            output = new BufferedWriter(fileWriter);
+            output.write(nombreJugadorActual); output.write(","+nivel);
+            output.newLine();
+            for(int i = 1; i < usuarios.size(); i++){
+                int coma=usuarios.get(i).indexOf(",");
+                if(!usuarios.get(i).substring(0,coma).equals(nombreJugadorActual)){
+                    output.write(usuarios.get(i));
+                    output.newLine();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                output.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void cleanText()
+    {
+        try
+        {
+            output = new BufferedWriter(new FileWriter(PATH_USUARIOS));
+            output.write("");
+            output.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
