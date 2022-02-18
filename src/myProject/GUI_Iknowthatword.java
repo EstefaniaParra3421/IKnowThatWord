@@ -68,6 +68,7 @@ public class GUI_Iknowthatword extends JFrame {
         panelHTPlay.add(textoHTPlay);
         panelHTPlay.setBackground(new Color(255,202,202));
         this.pack();
+
     }
 
     /**
@@ -138,21 +139,21 @@ public class GUI_Iknowthatword extends JFrame {
         panelPalabra.setBackground(new Color(255,202,202));
 
         //Configuracion e inicio del timer
-        timer = new Timer(1000, escucha);
+        timer = new Timer(5000, escucha);
         timer.start();
-        timerTwo = new Timer(3000, escucha);
+        timerTwo = new Timer(7000, escucha);
         timerTwo.start();
     }
 
     private class Escucha implements ActionListener {
 
-        private int counter = 0;
-        private boolean flagPressed = false, flagWords = false;
-        private String palabra;
+        private int counter = 0, puntos= 0;
+        private boolean flagPressed = false, flagWords = false, aciertaNivel = false;
+        private String palabra, nombre;
         private ArrayList<String> palabrasMemorizadas = new ArrayList<String>();
         private ArrayList<String> totalPalabras = new ArrayList<String>();
         private Random aleatorio = new Random();
-        private int flagBienvenida=1;
+        private int flagBienvenida=1, nivel =1;
         private ArrayList<String> usuarios=new ArrayList<String>();
 
         @Override
@@ -167,18 +168,20 @@ public class GUI_Iknowthatword extends JFrame {
             {
                 panelPalabra.setVisible(true);
                 panelHTPlay.setVisible(false);
+
                 if(flagBienvenida==1)
                 {
                     int usuarioNuevo=0;
                     usuarios= fileManager.lecturaFileUsuarios();
-                    String nombre=JOptionPane.showInputDialog("Bienvenido, introduzca su nombre");
+                    nombre = JOptionPane.showInputDialog("Bienvenido, introduzca su nombre");
                     for(int i=0; i < usuarios.size(); i++)//For para leer los usuarios
                     {
-                        if(usuarios.get(i).equals(nombre))
+                        int coma=usuarios.get(i).indexOf(",");
+                        if(usuarios.get(i).substring(0,coma).equals(nombre))
                         {
+                            nivel = Integer.parseInt(usuarios.get(i).substring(coma+1));
                             JOptionPane.showMessageDialog(null, "Bienvenido de nuevo "+nombre);
                             usuarioNuevo=1;
-                            //nivelEncontrado= usuarios.get(i).
                             break;
                         }
                     }
@@ -187,15 +190,18 @@ public class GUI_Iknowthatword extends JFrame {
                     {
                         usuarios.add(nombre);
                         fileManager.escribirTexto(nombre);
+                        JOptionPane.showMessageDialog(null, "Bienvenido a I Know That Word "+nombre);
                     }
 
-                    while(nombre==null)
+                    while(nombre==null || nombre=="")
                     {
                         nombre=JOptionPane.showInputDialog("Tiene que introducir un nombre para jugar.");
                         for(int i=0; i < usuarios.size(); i++)//For para leer los usuarios
                         {
-                            if(usuarios.get(i).equals(nombre))
+                            int coma=usuarios.get(i).indexOf(",");
+                            if(usuarios.get(i).substring(0,coma).equals(nombre))
                             {
+                                nivel = Integer.parseInt(usuarios.get(i).substring(coma+1));
                                 JOptionPane.showMessageDialog(null, "Bienvenido de nuevo "+nombre);
                                 usuarioNuevo=1;
                                 break;
@@ -206,54 +212,32 @@ public class GUI_Iknowthatword extends JFrame {
                         {
                             usuarios.add(nombre);
                             fileManager.escribirTexto(nombre);
+                            JOptionPane.showMessageDialog(null, "Bienvenido a I Know That Word "+nombre);
                         }
                     }
                     flagBienvenida=0;
                 }
 
-                //panelLogo.removeAll();
-                //panelLogo.setVisible(false);
-                //panelPalabra.setVisible(true);
                 botonPlay.setEnabled(false);
                 flagPressed = true;
-                controlPalabra.nivel();
-                System.out.println("entra al play");
+                controlPalabra.nivel(nivel);
             }
 
             if (objectEvent.getSource() == timer && flagPressed == true) {
-                //panelPalabra.updateUI()
-                //panelLogo.removeAll();
-                //panelLogo.setVisible(false);
-                //add(panelPalabra, BorderLayout.CENTER);
-                //panelPalabra.setVisible(true);
-                //botonPlay.setEnabled(false);
-
                 if (counter < controlPalabra.getPalabrasMemorizar())
                 {
                     if (counter == 0) {
-                        totalPalabras = controlPalabra.listadoPalabras();
+                        totalPalabras = controlPalabra.listadoPalabras(nivel);
                     }
                     palabra = totalPalabras.get(aleatorio.nextInt(totalPalabras.size()));
                     palabrasMemorizadas.add(palabra);
                     panelPalabra.setPalabra(palabra);
                     panelPalabra.updateUI();
-                    //add(panelPalabra, BorderLayout.CENTER);
                     counter++;
-                    /*if (counter == controlPalabra.getPalabrasMemorizar() + 1) {
-                        timer.stop();
-                        System.out.println(palabrasMemorizadas);
-                        remove(panelPalabra);
-                        JOptionPane.showMessageDialog(null, "Seguro que ya memorizaste tus palabras. Desmuestralo!");
-                        flagWords = true;
-                        counter = 1;*/
-                        //panelPalabra.updateUI();
-                        //JOptionPane.showConfirmDialog(panelPalabra,"jeje","",JOptionPane.YES_NO_OPTION);
-
                 }
                 else
                 {
                     timer.stop();
-                    System.out.println(palabrasMemorizadas);
                     JOptionPane.showMessageDialog(null, "Seguro que ya memorizaste tus palabras. Desmuestralo!");
                     flagWords = true;
                     counter = 1;
@@ -267,7 +251,6 @@ public class GUI_Iknowthatword extends JFrame {
                     String fraseSeleccionada = totalPalabras.get(counter);
                     panelPalabra.setPalabra(fraseSeleccionada);
                     panelPalabra.updateUI();
-                    System.out.println(palabrasMemorizadas);
                     Boolean flag=false;
                     int option = JOptionPane.showConfirmDialog(panelPalabra, "", "", JOptionPane.YES_NO_OPTION);
 
@@ -279,28 +262,57 @@ public class GUI_Iknowthatword extends JFrame {
                             flag=false;
                         }
                     }
-                    if(flag==true && option ==JOptionPane.YES_OPTION){
+
+
+                    if(flag==true && option==JOptionPane.YES_OPTION){
+                        puntos ++;
                         JOptionPane.showMessageDialog(null,"Acertaste!");
-                    }else if(flag == false && option ==JOptionPane.YES_OPTION){
+                    }else if(flag==false && option==JOptionPane.YES_OPTION){
                         JOptionPane.showMessageDialog(null, "Fallaste!");
                     }else if(flag==true && option==JOptionPane.NO_OPTION){
                         JOptionPane.showMessageDialog(null, "Fallaste!");
-                    }else if(flag == false && option==JOptionPane.NO_OPTION){
+                    }else if(flag==false && option==JOptionPane.NO_OPTION){
+                        puntos ++;
                         JOptionPane.showMessageDialog(null,"Acertaste!");
                     }
                     counter++;
-                }
-            } /*else {
-                    timerTwo.stop();
-                    remove(panelPalabra);
-                    panelLogo.add(labelLogo);
-                    textoPrueba.setText("AQUI VA EL HOW TO PLAY");
-                    textoPrueba.setBackground(null);
-                    textoPrueba.setFont(new Font("arial", Font.BOLD, 27));
-                    panelDatos
-                    .add(textoPrueba);
-                }*/
 
+                }else{
+                    timerTwo.stop();
+                    aciertaNivel = controlPalabra.estadoJuego(puntos, nivel);
+
+                    if(!aciertaNivel){
+                        JOptionPane.showMessageDialog(null, "Perdiste, no haz superado el porcentaje de aciertos");
+                        puntos = 0;
+                        counter = 0;
+                        flagPressed = false;
+                        flagWords = false;
+                        aciertaNivel = false;
+                        botonPlay.setEnabled(true);
+                        timer.start();
+                        timerTwo.start();
+                    }
+                    else if(aciertaNivel){
+                        JOptionPane.showMessageDialog(null, "HAZ GANADO!!");
+                        nivel++;
+                        fileManager.cleanText();
+                        fileManager.escribirTexto(usuarios,nombre,nivel);
+                        puntos = 0;
+                        counter = 0;
+                        flagPressed = false;
+                        flagWords = false;
+                        aciertaNivel = false;
+                        botonPlay.setEnabled(true);
+                        timer.start();
+                        timerTwo.start();
+                        JOptionPane.showMessageDialog(null, "Si quieres seguir jugando presiona de nuevo el botón play," +
+                                " Haz pasado al nivel "+nivel);
+
+                    }
+
+
+                }
+            }
             revalidate();
             repaint();
         }
