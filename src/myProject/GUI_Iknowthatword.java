@@ -1,6 +1,5 @@
 package myProject;
 
-import org.w3c.dom.css.RGBColor;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
@@ -8,7 +7,6 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.RGBImageFilter;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -27,6 +25,7 @@ public class GUI_Iknowthatword<colorDeFuente> extends JFrame {
     private ControlPalabra controlPalabra;
     private Timer timer, timerTwo;
     private FileManager fileManager;
+
 
     /**
      * Constructor of GUI_Iknowthatword class
@@ -256,7 +255,7 @@ public class GUI_Iknowthatword<colorDeFuente> extends JFrame {
                     panelPalabra.setPalabra(fraseSeleccionada);
                     panelPalabra.updateUI();
                     Boolean flag=false;
-                    int option = JOptionPane.showConfirmDialog(panelPalabra, "", "", JOptionPane.YES_NO_OPTION);
+                    int option = JOptionPane.showConfirmDialog(panelPalabra, "¿esta palabra se encontaba?", "", JOptionPane.YES_NO_OPTION);
 
                     for(int i = 0; i < palabrasMemorizadas.size(); i++){
                         if(fraseSeleccionada.equals(palabrasMemorizadas.get(i))){
@@ -293,6 +292,7 @@ public class GUI_Iknowthatword<colorDeFuente> extends JFrame {
                         flagWords = false;
                         aciertaNivel = false;
                         botonPlay.setEnabled(true);
+                        palabrasMemorizadas.clear();
                         timer.start();
                         timerTwo.start();
                     }
@@ -307,6 +307,7 @@ public class GUI_Iknowthatword<colorDeFuente> extends JFrame {
                         flagWords = false;
                         aciertaNivel = false;
                         botonPlay.setEnabled(true);
+                        palabrasMemorizadas.clear();
                         timer.start();
                         timerTwo.start();
                         JOptionPane.showMessageDialog(null, "Si quieres seguir jugando presiona de nuevo el botón play," +
