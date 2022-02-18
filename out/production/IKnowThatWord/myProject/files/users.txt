@@ -1,10 +1,3 @@
 tefa,2
-brandon,1
-<<<<<<< HEAD
+brandon,1,1
 ,1
-brda,1
-fsdafdsf,1
-HG,1
-=======
-te,1
->>>>>>> 9905f9573c244bf4caa95336e27534b0b3db22ce

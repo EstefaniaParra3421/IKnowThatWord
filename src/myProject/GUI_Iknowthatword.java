@@ -3,6 +3,7 @@ package myProject;
 import org.w3c.dom.css.RGBColor;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,7 +12,7 @@ import java.awt.image.RGBImageFilter;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class GUI_Iknowthatword extends JFrame {
+public class GUI_Iknowthatword<colorDeFuente> extends JFrame {
 
     //Declaracion de botones
     private JButton botonPlay, botonHTPlay;
@@ -42,6 +43,8 @@ public class GUI_Iknowthatword extends JFrame {
         this.getContentPane().setBackground(new Color(255,202,202));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setIconImage(new ImageIcon(getClass().getResource("/recursos/icono.png")).getImage());
+        //Creacion del panelHTPlay
+        panelHTPlay = new JPanel();
     }
 
     /**
@@ -51,8 +54,6 @@ public class GUI_Iknowthatword extends JFrame {
     private void ventanaHTPlay(){
         panelBotones.remove(botonHTPlay);
         panelPalabra.setVisible(false);
-        //Creacion del panelHTPlay
-        panelHTPlay = new JPanel();
         panelHTPlay.setBorder(BorderFactory.createTitledBorder(null, "HOW TO PLAY",TitledBorder.CENTER,
                 TitledBorder.CENTER, new Font("Berlin Sans FB", Font.PLAIN,40), new Color(46,150,215)));
         //Configuracion para el textoHTPlay
@@ -68,7 +69,6 @@ public class GUI_Iknowthatword extends JFrame {
         panelHTPlay.add(textoHTPlay);
         panelHTPlay.setBackground(new Color(255,202,202));
         this.pack();
-
     }
 
     /**
@@ -101,11 +101,15 @@ public class GUI_Iknowthatword extends JFrame {
         //Set up JComponents
         //---Boton Play---
         botonPlay = new JButton("PLAY");
+        botonPlay.setForeground(new Color(46,150,215));
+        botonPlay.setFont(new Font("Berlin Sans FB", Font.BOLD,17));
         //Escucha del boton
         botonPlay.addActionListener(escucha);
 
         //---Boton How to play---
         botonHTPlay = new JButton("HOW TO PLAY");
+        botonHTPlay.setForeground(new Color(46,150,215));
+        botonHTPlay.setFont(new Font("Berlin Sans FB", Font.BOLD,17));
         //Escucha del boton
         botonHTPlay.addActionListener(escucha);
 
