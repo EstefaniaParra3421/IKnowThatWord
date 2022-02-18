@@ -48,22 +48,24 @@ public class GUI_Iknowthatword extends JFrame {
      */
 
     private void ventanaHTPlay(){
-        panelBotones.remove(botonHTPlay);
-        panelPalabra.setVisible(false);
-        //Creacion del panelHTPlay
-        panelHTPlay = new JPanel();
-        panelHTPlay.setBorder(BorderFactory.createTitledBorder(null, "HOW TO PLAY",TitledBorder.CENTER,
-                TitledBorder.CENTER, new Font("Berlin Sans FB", Font.PLAIN,40), new Color(46,150,215)));
-        textoHTPlay.setText("A sequence of words appears (in Spanish), one after another. Memorize them all.\n\n" +
-                "After the round of words to memorize, the game will present you with a list with double of words.\n\n" +
-                "If the word belongs to the list you have memorized, click on the “SI” button, otherwise, click on the “NO” button.\n\n" +
-                "If you acert to hit the vast majority of words, you will go to the next level.\n\n" +
-                "Are you ready?");
-        textoHTPlay.setBackground(null);
-        textoHTPlay.setFont(new Font("Berlin Sans FB", Font.PLAIN,30));
-        this.add(panelHTPlay);
-        panelHTPlay.add(textoHTPlay);
-        panelHTPlay.setBackground(new Color(255,202,202));
+
+            panelBotones.remove(botonHTPlay);
+            panelPalabra.setVisible(false);
+            //Creacion del panelHTPlay
+            panelHTPlay = new JPanel();
+            panelHTPlay.setBorder(BorderFactory.createTitledBorder(null, "HOW TO PLAY", TitledBorder.CENTER,
+                    TitledBorder.CENTER, new Font("Berlin Sans FB", Font.PLAIN, 40), new Color(46, 150, 215)));
+            textoHTPlay.setText("A sequence of words appears (in Spanish), one after another. Memorize them all.\n\n" +
+                    "After the round of words to memorize, the game will present you with a list with double of words.\n\n" +
+                    "If the word belongs to the list you have memorized, click on the “SI” button, otherwise, click on the “NO” button.\n\n" +
+                    "If you acert to hit the vast majority of words, you will go to the next level.\n\n" +
+                    "Are you ready?");
+            textoHTPlay.setBackground(null);
+            textoHTPlay.setFont(new Font("Berlin Sans FB", Font.PLAIN, 30));
+            this.add(panelHTPlay);
+            panelHTPlay.add(textoHTPlay);
+            panelHTPlay.setBackground(new Color(255, 202, 202));
+
     }
 
     //Ejecucion del programa (main)
@@ -131,19 +133,18 @@ public class GUI_Iknowthatword extends JFrame {
         panelPalabra = new PanelPalabra(controlPalabra.getPalabra());
         this.add(panelPalabra, BorderLayout.CENTER);
         panelPalabra.setBackground(new Color(255,202,202));
-        //panelPalabra.setVisible(false);
 
-        timer = new Timer(1000, escucha);
+        timer = new Timer(5000, escucha);
         timer.start();
-        timerTwo = new Timer(5000, escucha);
+        timerTwo = new Timer(7000, escucha);
         timerTwo.start();
     }
 
     private class Escucha implements ActionListener {
 
-        private int counter = 0;
-        private boolean flagPressed = false, flagWords = false;
-        private String palabra;
+        private int counter = 0, puntos= 0;
+        private boolean flagPressed = false, flagWords = false, aciertaNivel = false;
+        private String palabra, nombre;
         private ArrayList<String> palabrasMemorizadas = new ArrayList<String>();
         private ArrayList<String> totalPalabras = new ArrayList<String>();
         private Random aleatorio = new Random();
@@ -153,7 +154,6 @@ public class GUI_Iknowthatword extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent objectEvent) {
-            //panelHTPlay.removeAll();
 
             if (objectEvent.getSource() == botonHTPlay)
             {
@@ -162,14 +162,15 @@ public class GUI_Iknowthatword extends JFrame {
 
             if (objectEvent.getSource() == botonPlay)
             {
-                //panelHTPlay.setVisible(false);
-                //panelLogo.setVisible(false);
+                panelHTPlay.setVisible(false);
+                remove(panelHTPlay);
+
                 if(flagBienvenida==1)
                 {
                     int usuarioNuevo=0;
                     usuarios= fileManager.lecturaFileUsuarios();
 
-                    String nombre = JOptionPane.showInputDialog("Bienvenido, introduzca su nombre");
+                    nombre = JOptionPane.showInputDialog("Bienvenido, introduzca su nombre");
                     for(int i=0; i < usuarios.size(); i++)//For para leer los usuarios
                     {
                         int coma=usuarios.get(i).indexOf(",");
@@ -178,7 +179,6 @@ public class GUI_Iknowthatword extends JFrame {
                             nivel = Integer.parseInt(usuarios.get(i).substring(coma+1));
                             JOptionPane.showMessageDialog(null, "Bienvenido de nuevo "+nombre);
                             usuarioNuevo=1;
-                            //nivelEncontrado= usuarios.get(i).
                             break;
                         }
                     }
@@ -218,7 +218,6 @@ public class GUI_Iknowthatword extends JFrame {
                 botonPlay.setEnabled(false);
                 flagPressed = true;
                 controlPalabra.nivel(nivel);
-                System.out.println("entra al play");
             }
 
             if (objectEvent.getSource() == timer && flagPressed == true) {
@@ -236,7 +235,6 @@ public class GUI_Iknowthatword extends JFrame {
                 else
                 {
                     timer.stop();
-                    System.out.println(palabrasMemorizadas);
                     JOptionPane.showMessageDialog(null, "Seguro que ya memorizaste tus palabras. Desmuestralo!");
                     flagWords = true;
                     counter = 1;
@@ -250,7 +248,6 @@ public class GUI_Iknowthatword extends JFrame {
                     String fraseSeleccionada = totalPalabras.get(counter);
                     panelPalabra.setPalabra(fraseSeleccionada);
                     panelPalabra.updateUI();
-                    System.out.println(palabrasMemorizadas);
                     Boolean flag=false;
                     int option = JOptionPane.showConfirmDialog(panelPalabra, "", "", JOptionPane.YES_NO_OPTION);
 
@@ -263,22 +260,54 @@ public class GUI_Iknowthatword extends JFrame {
                         }
                     }
 
-                    Boolean tiempo = timerTwo.getDelay() < 1000;
 
-                    System.out.println("Tiempo: "+timerTwo.getInitialDelay());
-                    System.out.println(tiempo);
-
-
-                    if(flag==true && option==JOptionPane.YES_OPTION /*&& tiempo==false*/){
+                    if(flag==true && option==JOptionPane.YES_OPTION){
+                        puntos ++;
                         JOptionPane.showMessageDialog(null,"Acertaste!");
-                    }else if(flag==false && option==JOptionPane.YES_OPTION /*|| tiempo==true*/){
+                    }else if(flag==false && option==JOptionPane.YES_OPTION){
                         JOptionPane.showMessageDialog(null, "Fallaste!");
-                    }else if(flag==true && option==JOptionPane.NO_OPTION /*|| tiempo==true*/){
+                    }else if(flag==true && option==JOptionPane.NO_OPTION){
                         JOptionPane.showMessageDialog(null, "Fallaste!");
-                    }else if(flag==false && option==JOptionPane.NO_OPTION /*&& tiempo==false*/){
+                    }else if(flag==false && option==JOptionPane.NO_OPTION){
+                        puntos ++;
                         JOptionPane.showMessageDialog(null,"Acertaste!");
                     }
                     counter++;
+
+                }else{
+                    timerTwo.stop();
+                    aciertaNivel = controlPalabra.estadoJuego(puntos, nivel);
+
+                    if(!aciertaNivel){
+                        JOptionPane.showMessageDialog(null, "Perdiste, no haz superado el porcentaje de aciertos");
+                        puntos = 0;
+                        counter = 0;
+                        flagPressed = false;
+                        flagWords = false;
+                        aciertaNivel = false;
+                        botonPlay.setEnabled(true);
+                        timer.start();
+                        timerTwo.start();
+                    }
+                    else if(aciertaNivel){
+                        JOptionPane.showMessageDialog(null, "HAZ GANADO!!");
+                        nivel++;
+                        fileManager.cleanText();
+                        fileManager.escribirTexto(usuarios,nombre,nivel);
+                        puntos = 0;
+                        counter = 0;
+                        flagPressed = false;
+                        flagWords = false;
+                        aciertaNivel = false;
+                        botonPlay.setEnabled(true);
+                        timer.start();
+                        timerTwo.start();
+                        JOptionPane.showMessageDialog(null, "Si quieres seguir jugando presiona de nuevo el botón play," +
+                                " Haz pasado al nivel "+nivel);
+
+                    }
+
+
                 }
             }
             revalidate();

@@ -80,8 +80,6 @@ public class ControlPalabra {
         nivel(nivelUsuario);
         controlPalabra = new ControlPalabra();
         totalPalabras = new ArrayList<String>();
-        System.out.println("entra al listado de palabras " + palabrasMemorizar);
-        System.out.println(getPalabrasMemorizar());
         for (int i = 1; i <= palabrasMemorizar * 2; i++) {
             fraseSeleccionada = controlPalabra.getPalabra();
             totalPalabras.add(fraseSeleccionada);
@@ -90,11 +88,36 @@ public class ControlPalabra {
     }
 
     public void palabrasAleatoriasMostrar(ArrayList palabrasMemorizadas, ArrayList totalPalabras) {
-        System.out.println("entra a palabras aleatorias");
         String palabraSeleccionada = palabrasMemorizadas.get(0).toString();
-        System.out.println(palabraSeleccionada + palabrasMemorizadas.size());
         palabraSeleccionada = palabrasMemorizadas.get(9).toString();
-        System.out.println(palabraSeleccionada);
+    }
+
+    public Boolean estadoJuego(int puntos, int nivel){
+        boolean gano = false;
+
+        if(nivel == 1 && puntos >= 14){
+            return gano = true;
+        }else if(nivel == 2 && puntos >= 28){
+            return gano = true;
+        }else if(nivel == 3 && puntos >= 38){
+            return gano = true;
+        }else if(nivel == 4 && puntos >= 48){
+            return gano = true;
+        }else if(nivel == 5 && puntos >= 56){
+            return gano = true;
+        }else if(nivel == 6 && puntos >= 68){
+            return gano = true;
+        }else if(nivel == 7 && puntos >= 90){
+            return gano = true;
+        }else if(nivel == 8 && puntos >= 108){
+            return gano = true;
+        }else if(nivel == 9 && puntos >= 133){
+            return gano = true;
+        }else if(nivel == 10 && puntos >= 200){
+            return gano = true;
+        }
+
+        return gano;
     }
 
     public ArrayList<String> getTotalPalabras() {

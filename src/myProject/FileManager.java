@@ -87,4 +87,39 @@ public class FileManager {
             }
         }
     }
+    public void escribirTexto(ArrayList<String> usuarios, String nombreJugadorActual, int nivel) {
+        try {
+            fileWriter = new FileWriter(PATH_USUARIOS, true);
+            output = new BufferedWriter(fileWriter);
+            output.write(nombreJugadorActual); output.write(","+nivel);
+            output.newLine();
+            for(int i = 1; i < usuarios.size(); i++){
+                int coma=usuarios.get(i).indexOf(",");
+                if(!usuarios.get(i).substring(0,coma).equals(nombreJugadorActual)){
+                    output.write(usuarios.get(i));
+                    output.newLine();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                output.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void cleanText()
+    {
+        try
+        {
+            output = new BufferedWriter(new FileWriter(PATH_USUARIOS));
+            output.write("");
+            output.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

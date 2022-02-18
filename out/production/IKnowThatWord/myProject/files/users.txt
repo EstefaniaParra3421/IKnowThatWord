@@ -1,17 +1,3 @@
-tefa,1
-<<<<<<< HEAD
+tefa,2
 brandon,1
-s,1
-d,1
-nivel,1
-usr,1
-dd,1
-,1
-ivan,1
-=======
-Brandon,1
-brandon,1
-,1
-brda,1
-fsdafdsf,1
->>>>>>> f5373816047968ce7bc302dd570b0fa7233c74cc
+te,1
