@@ -1,24 +1,22 @@
 package myProject;
 
-import org.w3c.dom.css.RGBColor;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.RGBImageFilter;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class GUI_Iknowthatword extends JFrame {
+public class GUI_Iknowthatword<colorDeFuente> extends JFrame {
 
     //Declaracion de botones
     private JButton botonPlay, botonHTPlay;
 
     //Contenedor
-    private JPanel panelBotones, panelDatos, panelLogo, panelHTPlay;
-    private Header titulo;
+    private JPanel panelBotones, panelLogo, panelHTPlay;
     private ImageIcon logo;
     private JLabel labelLogo;
     private Escucha escucha;
@@ -28,19 +26,24 @@ public class GUI_Iknowthatword extends JFrame {
     private Timer timer, timerTwo;
     private FileManager fileManager;
 
-    //Clase contructor
+
+    /**
+     * Constructor of GUI_Iknowthatword class
+     */
     public GUI_Iknowthatword() {
         initGUI();
 
         //Configuracion por defecto de la ventana
         this.setTitle("I KNOW THAT WORD");
-        //this.setSize(600, 500);
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
         //Color de la ventana
         this.getContentPane().setBackground(new Color(255,202,202));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setIconImage(new ImageIcon(getClass().getResource("/recursos/icono.png")).getImage());
+        //Creacion del panelHTPlay
+        panelHTPlay = new JPanel();
     }
 
     /**
@@ -48,27 +51,31 @@ public class GUI_Iknowthatword extends JFrame {
      */
 
     private void ventanaHTPlay(){
-
-            panelBotones.remove(botonHTPlay);
-            panelPalabra.setVisible(false);
-            //Creacion del panelHTPlay
-            panelHTPlay = new JPanel();
-            panelHTPlay.setBorder(BorderFactory.createTitledBorder(null, "HOW TO PLAY", TitledBorder.CENTER,
-                    TitledBorder.CENTER, new Font("Berlin Sans FB", Font.PLAIN, 40), new Color(46, 150, 215)));
-            textoHTPlay.setText("A sequence of words appears (in Spanish), one after another. Memorize them all.\n\n" +
-                    "After the round of words to memorize, the game will present you with a list with double of words.\n\n" +
-                    "If the word belongs to the list you have memorized, click on the “SI” button, otherwise, click on the “NO” button.\n\n" +
-                    "If you acert to hit the vast majority of words, you will go to the next level.\n\n" +
-                    "Are you ready?");
-            textoHTPlay.setBackground(null);
-            textoHTPlay.setFont(new Font("Berlin Sans FB", Font.PLAIN, 30));
-            this.add(panelHTPlay);
-            panelHTPlay.add(textoHTPlay);
-            panelHTPlay.setBackground(new Color(255, 202, 202));
-
+        panelBotones.remove(botonHTPlay);
+        panelPalabra.setVisible(false);
+        panelHTPlay.setBorder(BorderFactory.createTitledBorder(null, "HOW TO PLAY",TitledBorder.CENTER,
+                TitledBorder.CENTER, new Font("Berlin Sans FB", Font.PLAIN,40), new Color(46,150,215)));
+        //Configuracion para el textoHTPlay
+        textoHTPlay.setText("A sequence of words appears (in Spanish), one after another. Memorize them all.\n\n" +
+                "After the round of words to memorize, the game will present you with a list with double of words.\n\n" +
+                "If the word belongs to the list you have memorized, click on the “SI” button, otherwise, click on the “NO” button.\n\n" +
+                "If you acert to hit the vast majority of words, you will go to the next level.\n\n" +
+                "Are you ready?");
+        textoHTPlay.setBackground(null);
+        textoHTPlay.setFont(new Font("Berlin Sans FB", Font.PLAIN,30));
+        this.add(panelHTPlay);
+        //Agregar el texto al panel
+        panelHTPlay.add(textoHTPlay);
+        panelHTPlay.setBackground(new Color(255,202,202));
+        this.pack();
     }
 
-    //Ejecucion del programa (main)
+    /**
+     * Main process of the Java program
+     *
+     * @param args Object used in order to send input data from command line when
+     *             the program is execute by console.
+     */
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             @Override
@@ -78,25 +85,30 @@ public class GUI_Iknowthatword extends JFrame {
         });
     }
 
+    /**
+     * This method is used to set up the default JComponent Configuration,
+     * create Listener and control Objects used for the GUI_Iknowthatword class
+     */
     private void initGUI() {
 
         //Set up Container and layout
 
         //Cretate Listener and Control objects
-        fileManager=new FileManager();
+        fileManager = new FileManager();
         escucha = new Escucha();
 
         //Set up JComponents
-        titulo = new Header("I KNOW THAT WORD", Color.BLACK);
-        //this.add(titulo,BorderLayout.NORTH);
-
         //---Boton Play---
         botonPlay = new JButton("PLAY");
+        botonPlay.setForeground(new Color(46,150,215));
+        botonPlay.setFont(new Font("Berlin Sans FB", Font.BOLD,17));
         //Escucha del boton
         botonPlay.addActionListener(escucha);
 
         //---Boton How to play---
         botonHTPlay = new JButton("HOW TO PLAY");
+        botonHTPlay.setForeground(new Color(46,150,215));
+        botonHTPlay.setFont(new Font("Berlin Sans FB", Font.BOLD,17));
         //Escucha del boton
         botonHTPlay.addActionListener(escucha);
 
@@ -105,15 +117,9 @@ public class GUI_Iknowthatword extends JFrame {
         panelBotones.add(botonPlay);
         panelBotones.add(botonHTPlay);
         panelBotones.setBackground(new Color(255,202,202));
-
+        //Mostrar panelBotones
         this.add(panelBotones, BorderLayout.SOUTH);
 
-        //Creacion del panelDatos
-        panelDatos = new JPanel();
-        panelDatos.setBorder(BorderFactory.createTitledBorder(null, "",
-        TitledBorder.CENTER, TitledBorder.CENTER, new Font("calibri", Font.BOLD,20), Color.BLUE));
-
-        this.add(panelDatos, BorderLayout.CENTER);
         textoHTPlay = new JTextArea(15, 20);
 
         //Creacion de panelLogo
@@ -123,7 +129,7 @@ public class GUI_Iknowthatword extends JFrame {
         panelLogo = new JPanel();
         panelLogo.add(labelLogo);
         panelLogo.setBackground(new Color(255,202,202));
-
+        //Mostrar el panelLogo
         this.add(panelLogo, BorderLayout.NORTH);
 
         //Creacion del controlPalabra
@@ -131,9 +137,11 @@ public class GUI_Iknowthatword extends JFrame {
 
         //Creacion del panelPalabra
         panelPalabra = new PanelPalabra(controlPalabra.getPalabra());
+        //Mostrar panelPalabra
         this.add(panelPalabra, BorderLayout.CENTER);
         panelPalabra.setBackground(new Color(255,202,202));
 
+        //Configuracion e inicio del timer
         timer = new Timer(5000, escucha);
         timer.start();
         timerTwo = new Timer(7000, escucha);
@@ -151,7 +159,6 @@ public class GUI_Iknowthatword extends JFrame {
         private int flagBienvenida=1, nivel =1;
         private ArrayList<String> usuarios=new ArrayList<String>();
 
-
         @Override
         public void actionPerformed(ActionEvent objectEvent) {
 
@@ -162,14 +169,13 @@ public class GUI_Iknowthatword extends JFrame {
 
             if (objectEvent.getSource() == botonPlay)
             {
+                panelPalabra.setVisible(true);
                 panelHTPlay.setVisible(false);
-                remove(panelHTPlay);
 
                 if(flagBienvenida==1)
                 {
                     int usuarioNuevo=0;
                     usuarios= fileManager.lecturaFileUsuarios();
-
                     nombre = JOptionPane.showInputDialog("Bienvenido, introduzca su nombre");
                     for(int i=0; i < usuarios.size(); i++)//For para leer los usuarios
                     {
@@ -249,7 +255,7 @@ public class GUI_Iknowthatword extends JFrame {
                     panelPalabra.setPalabra(fraseSeleccionada);
                     panelPalabra.updateUI();
                     Boolean flag=false;
-                    int option = JOptionPane.showConfirmDialog(panelPalabra, "", "", JOptionPane.YES_NO_OPTION);
+                    int option = JOptionPane.showConfirmDialog(panelPalabra, "¿esta palabra se encontaba?", "", JOptionPane.YES_NO_OPTION);
 
                     for(int i = 0; i < palabrasMemorizadas.size(); i++){
                         if(fraseSeleccionada.equals(palabrasMemorizadas.get(i))){
@@ -286,6 +292,7 @@ public class GUI_Iknowthatword extends JFrame {
                         flagWords = false;
                         aciertaNivel = false;
                         botonPlay.setEnabled(true);
+                        palabrasMemorizadas.clear();
                         timer.start();
                         timerTwo.start();
                     }
@@ -300,6 +307,7 @@ public class GUI_Iknowthatword extends JFrame {
                         flagWords = false;
                         aciertaNivel = false;
                         botonPlay.setEnabled(true);
+                        palabrasMemorizadas.clear();
                         timer.start();
                         timerTwo.start();
                         JOptionPane.showMessageDialog(null, "Si quieres seguir jugando presiona de nuevo el botón play," +
